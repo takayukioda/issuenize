@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -26,6 +28,21 @@ type Story struct {
 	AcceptanceCriteria []string `yaml:"Acceptance Criteria"`
 	Issue              *string  `yaml:"Issue"`
 	Labels             []string `yaml:"Labels"`
+	template           *template.Template
+}
+
+func (s *Story) toMarkdown() []byte {
+	var err error
+	if s.template == nil {
+		s.template, err = template.New("md.tmpl").ParseFiles("md.tmpl")
+		panicIfError(err)
+	}
+
+	var b bytes.Buffer
+	err = s.template.Execute(&b, s)
+	panicIfError(err)
+
+	return b.Bytes()
 }
 
 /**
@@ -64,12 +81,8 @@ func main() {
 		os.Exit(EXIT_ERROR)
 	}
 
-	tmpl, err := template.ParseFiles("md.tmpl")
-	panicIfError(err)
 	for _, s := range stories {
-		err = tmpl.Execute(os.Stdout, s)
-		panicIfError(err)
-		return
+		fmt.Println(string(s.toMarkdown()))
 	}
 
 }
