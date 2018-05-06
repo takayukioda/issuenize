@@ -64,9 +64,9 @@ func main() {
 		os.Exit(EXIT_ERROR)
 	}
 
+	tmpl, err := template.ParseFiles("md.tmpl")
+	panicIfError(err)
 	for _, s := range stories {
-		tmpl, err := template.ParseFiles("md.tmpl")
-		panicIfError(err)
 		err = tmpl.Execute(os.Stdout, s)
 		panicIfError(err)
 		return
