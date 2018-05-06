@@ -1,0 +1,38 @@
+# Title
+
+{{ .Title }}
+
+## Ideal Schedule
+{{ range $_, $item := .IdealSchedule }}
+- {{ $item -}}
+{{ end }}
+
+## Goal
+
+{{ .Goal }}
+
+### Who
+
+{{ .Who }}
+
+### What
+
+{{ .What }}
+
+### Why
+
+{{ .Why }}
+
+## Acceptance Criteria
+{{ range $_, $item := .AcceptanceCriteria }}
+- {{ $item -}}
+{{ end }}
+
+## Issue
+
+{{ .Issue }}
+
+## Labels
+{{ range $_, $item := .Labels }}
+- {{ $item -}}
+{{ end }}
